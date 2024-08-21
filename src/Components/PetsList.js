@@ -3,6 +3,7 @@ import pets from "../petsData";
 import PetItem from "./PetItem";
 
 function PetsList() {
+  const [type, setType] = useState("");
   const [query, setQuery] = useState("");
   const petList = pets.filter((pet) => {
     if (pet.name.toLowerCase().includes(query.toLowerCase())) {
@@ -11,10 +12,24 @@ function PetsList() {
       return false;
     }
   });
-  const listPets = petList.map((pet) => <PetItem pet={pet} key={pet.id} />);
+
+  const listType = petList.filter((pet) => {
+    if (pet.type.includes(type)) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+
+  const listPets = listType.map((pet) => <PetItem pet={pet} key={pet.id} />);
 
   const handleSearch = (event) => {
     setQuery(event.target.value);
+    console.log(event.target.value);
+  };
+
+  const handleType = (event) => {
+    setType(event.target.value);
     console.log(event.target.value);
   };
 
@@ -39,7 +54,7 @@ function PetsList() {
               </div>
               <br />
               Type:
-              <select className="form-select">
+              <select onChange={handleType} className="form-select">
                 <option value="" selected>
                   All
                 </option>
